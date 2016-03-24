@@ -910,7 +910,7 @@ var Select = React.createClass({
 
         // Make sure our multi selects are arrays
         var selectName = this.props.name;
-        if (this.props.multi && this.props.name.indexOf('[]') !== this.props.name.length - 2) {
+        if (this.props.multi && this.props.name && this.props.name.indexOf('[]') !== this.props.name.length - 2) {
             selectName += '[]';
         }
 
