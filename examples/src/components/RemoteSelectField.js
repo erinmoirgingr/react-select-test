@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -5,8 +6,8 @@ class RemoteSelectField extends React.Component {
     static displayName = 'RemoteSelectField';
 
     static propTypes = {
-		hint: React.PropTypes.string,
-		label: React.PropTypes.string,
+		hint: PropTypes.string,
+		label: PropTypes.string,
 	};
 
     loadOptions = (input, callback) => {

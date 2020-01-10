@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -9,7 +10,7 @@ class CustomKeysField extends React.Component {
     static displayName = 'CustomKeysField';
 
     static propTypes = {
-		label: React.PropTypes.string
+		label: PropTypes.string
 	};
 
     state = {

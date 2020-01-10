@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -9,10 +10,10 @@ class SelectedValuesField extends React.Component {
     static displayName = 'SelectedValuesField';
 
     static propTypes = {
-		allowCreate: React.PropTypes.bool,
-		hint: React.PropTypes.string,
-		label: React.PropTypes.string,
-		options: React.PropTypes.array,
+		allowCreate: PropTypes.bool,
+		hint: PropTypes.string,
+		label: PropTypes.string,
+		options: PropTypes.array,
 	};
 
     onLabelClick = (data, event) => {

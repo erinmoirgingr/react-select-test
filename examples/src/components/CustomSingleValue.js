@@ -1,10 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Gravatar from 'react-gravatar';
 
 class SingleValue extends React.Component {
     static propTypes = {
-		placeholder: React.PropTypes.string,
-		value: React.PropTypes.object
+		placeholder: PropTypes.string,
+		value: PropTypes.object
 	};
 
     render() {

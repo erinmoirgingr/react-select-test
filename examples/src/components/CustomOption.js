@@ -1,15 +1,16 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Gravatar from 'react-gravatar';
 
 class Option extends React.Component {
     static propTypes = {
-		addLabelText: React.PropTypes.string,
-		className: React.PropTypes.string,
-		mouseDown: React.PropTypes.func,
-		mouseEnter: React.PropTypes.func,
-		mouseLeave: React.PropTypes.func,
-		option: React.PropTypes.object.isRequired,
-		renderFunc: React.PropTypes.func
+		addLabelText: PropTypes.string,
+		className: PropTypes.string,
+		mouseDown: PropTypes.func,
+		mouseEnter: PropTypes.func,
+		mouseLeave: PropTypes.func,
+		option: PropTypes.object.isRequired,
+		renderFunc: PropTypes.func
 	};
 
     handleMouseDown = (e) => {

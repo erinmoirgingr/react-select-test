@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 var classes = require('classnames');
 
@@ -5,12 +6,12 @@ class Value extends React.Component {
     static displayName = 'Value';
 
     static propTypes = {
-		disabled: React.PropTypes.bool,                   // disabled prop passed to ReactSelect
-		onOptionLabelClick: React.PropTypes.func,         // method to handle click on value label
-		onRemove: React.PropTypes.func,                   // method to handle remove of that value
-		option: React.PropTypes.object.isRequired,        // option passed to component
-		optionLabelClick: React.PropTypes.bool,           // indicates if onOptionLabelClick should be handled
-		renderer: React.PropTypes.func                    // method to render option label passed to ReactSelect
+		disabled: PropTypes.bool,                   // disabled prop passed to ReactSelect
+		onOptionLabelClick: PropTypes.func,         // method to handle click on value label
+		onRemove: PropTypes.func,                   // method to handle remove of that value
+		option: PropTypes.object.isRequired,        // option passed to component
+		optionLabelClick: PropTypes.bool,           // indicates if onOptionLabelClick should be handled
+		renderer: PropTypes.func                    // method to render option label passed to ReactSelect
 	};
 
     blockEvent = (event) => {

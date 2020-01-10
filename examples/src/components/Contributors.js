@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -7,8 +8,8 @@ class Contributors extends React.Component {
     static displayName = 'Contributors';
 
     static propTypes = {
-		hint: React.PropTypes.string,
-		label: React.PropTypes.string,
+		hint: PropTypes.string,
+		label: PropTypes.string,
 	};
 
     state = {

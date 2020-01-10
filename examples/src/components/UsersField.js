@@ -1,5 +1,6 @@
 import GravatarOption from './CustomOption';
 import GravatarValue from './CustomSingleValue';
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -7,8 +8,8 @@ const USERS = require('../data/users');
 
 class UsersField extends React.Component {
     static propTypes = {
-		hint: React.PropTypes.string,
-		label: React.PropTypes.string,
+		hint: PropTypes.string,
+		label: PropTypes.string,
 	};
 
     renderHint = () => {

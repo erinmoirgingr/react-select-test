@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -12,8 +13,8 @@ class StatesField extends React.Component {
     static displayName = 'StatesField';
 
     static propTypes = {
-		label: React.PropTypes.string,
-		searchable: React.PropTypes.bool,
+		label: PropTypes.string,
+		searchable: PropTypes.bool,
 	};
 
     static defaultProps = {

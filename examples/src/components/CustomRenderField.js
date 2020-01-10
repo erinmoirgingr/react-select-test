@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Select from 'react-select';
 
@@ -9,9 +10,9 @@ class CustomRenderField extends React.Component {
     static displayName = 'CustomRenderField';
 
     static propTypes = {
-		delimiter: React.PropTypes.string,
-		label: React.PropTypes.string,
-		multi: React.PropTypes.bool,
+		delimiter: PropTypes.string,
+		label: PropTypes.string,
+		multi: PropTypes.bool,
 	};
 
     state = {};

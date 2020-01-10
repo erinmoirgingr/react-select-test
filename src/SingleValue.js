@@ -1,10 +1,11 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 var classes = require('classnames');
 
 class SingleValue extends React.Component {
     static propTypes = {
-		placeholder: React.PropTypes.string,       // this is default value provided by React-Select based component
-		value: React.PropTypes.object              // selected option
+		placeholder: PropTypes.string,       // this is default value provided by React-Select based component
+		value: PropTypes.object              // selected option
 	};
 
     render() {

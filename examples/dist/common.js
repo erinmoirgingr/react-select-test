@@ -283,11 +283,11 @@ var toArray = require('./toArray');
  * @return {boolean}
  */
 function hasArrayNature(obj) {
-  return(
+  return (
     // not null/false
     !!obj && (
     // arrays are objects, NodeLists are functions in Safari
-    typeof obj == 'object' || typeof obj == 'function') &&
+    (typeof obj == 'object' || typeof obj == 'function')) &&
     // quacks like an array
     'length' in obj &&
     // not window
@@ -296,11 +296,10 @@ function hasArrayNature(obj) {
     // a 'select' element has 'length' and 'item' properties on IE8
     typeof obj.nodeType != 'number' && (
     // a real array
-    Array.isArray(obj) ||
+    (Array.isArray(obj) ||
     // arguments
-    'callee' in obj ||
-    // HTMLCollection/NodeList
-    'item' in obj)
+    'callee' in obj || // HTMLCollection/NodeList
+    'item' in obj))
   );
 }
 
@@ -7212,7 +7211,7 @@ var ReactCompositeComponentMixin = {
     }
     !(
     // TODO: An `isValidNode` function would probably be more appropriate
-    renderedComponent === null || renderedComponent === false || ReactElement.isValidElement(renderedComponent)) ? "production" !== 'production' ? invariant(false, '%s.render(): A valid ReactComponent must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
+    (renderedComponent === null || renderedComponent === false || ReactElement.isValidElement(renderedComponent))) ? "production" !== 'production' ? invariant(false, '%s.render(): A valid ReactComponent must be returned. You may have ' + 'returned undefined, an array or some other invalid object.', this.getName() || 'ReactCompositeComponent') : invariant(false) : undefined;
     return renderedComponent;
   },
 
@@ -18865,6 +18864,8 @@ module.exports = require('react/lib/ReactDOM');
 
   var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+  var PropTypes = require('prop-types');
+
   var React = require('react');
 
   var createReactClass = require('create-react-class');
@@ -18881,15 +18882,15 @@ module.exports = require('react/lib/ReactDOM');
       displayName: 'AutosizeInput',
 
       propTypes: {
-          value: React.PropTypes.any, // field value
-          defaultValue: React.PropTypes.any, // default field value
-          onChange: React.PropTypes.func, // onChange handler: function(newValue) {}
-          style: React.PropTypes.object, // css styles for the outer element
-          className: React.PropTypes.string, // className for the outer element
-          minWidth: React.PropTypes.oneOfType([// minimum width for input element
-          React.PropTypes.number, React.PropTypes.string]),
-          inputStyle: React.PropTypes.object, // css styles for the input element
-          inputClassName: React.PropTypes.string // className for the input element
+          value: PropTypes.any, // field value
+          defaultValue: PropTypes.any, // default field value
+          onChange: PropTypes.func, // onChange handler: function(newValue) {}
+          style: PropTypes.object, // css styles for the outer element
+          className: PropTypes.string, // className for the outer element
+          minWidth: PropTypes.oneOfType([// minimum width for input element
+          PropTypes.number, PropTypes.string]),
+          inputStyle: PropTypes.object, // css styles for the input element
+          inputClassName: PropTypes.string // className for the input element
       },
       getDefaultProps: function getDefaultProps() {
           return {
