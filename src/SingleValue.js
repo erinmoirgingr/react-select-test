@@ -1,12 +1,13 @@
 var React = require('react');
 var classes = require('classnames');
 
-var SingleValue = React.createClass({
-	propTypes: {
+class SingleValue extends React.Component {
+    static propTypes = {
 		placeholder: React.PropTypes.string,       // this is default value provided by React-Select based component
 		value: React.PropTypes.object              // selected option
-	},
-	render () {
+	};
+
+    render() {
 		var classNames = classes('Select-placeholder', this.props.value && this.props.value.className);
 		return (
 			<div
@@ -16,6 +17,6 @@ var SingleValue = React.createClass({
 				>{this.props.placeholder}</div>
 		);
 	}
-});
+}
 
 module.exports = SingleValue;

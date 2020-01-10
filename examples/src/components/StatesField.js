@@ -8,50 +8,54 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var StatesField = React.createClass({
-	displayName: 'StatesField',
-	propTypes: {
+class StatesField extends React.Component {
+    static displayName = 'StatesField';
+
+    static propTypes = {
 		label: React.PropTypes.string,
 		searchable: React.PropTypes.bool,
-	},
-	getDefaultProps () {
-		return {
-			label: 'States:',
-			searchable: true,
-		};
-	},
-	getInitialState () {
-		return {
-			country: 'AU',
-			disabled: false,
-			searchable: this.props.searchable,
-			id: ++id,
-			selectValue: 'new-south-wales'
-		};
-	},
-	switchCountry (e) {
+	};
+
+    static defaultProps = {
+        label: 'States:',
+        searchable: true,
+    };
+
+    state = {
+        country: 'AU',
+        disabled: false,
+        searchable: this.props.searchable,
+        id: ++id,
+        selectValue: 'new-south-wales'
+    };
+
+    switchCountry = (e) => {
 		var newCountry = e.target.value;
 		console.log('Country changed to ' + newCountry);
 		this.setState({
 			country: newCountry,
 			selectValue: null
 		});
-	},
-	updateValue (newValue) {
+	};
+
+    updateValue = (newValue) => {
 		logChange('State changed to ' + newValue);
 		this.setState({
 			selectValue: newValue || null
 		});
-	},
-	focusStateSelect () {
+	};
+
+    focusStateSelect = () => {
 		this.refs.stateSelect.focus();
-	},
-	toggleCheckbox (e) {
+	};
+
+    toggleCheckbox = (e) => {
 		let newState = {};
 		newState[e.target.name] = e.target.checked;
 		this.setState(newState);
-	},
-	render () {
+	};
+
+    render() {
 		var ops = STATES[this.state.country];
 		return (
 			<div className="section">
@@ -82,7 +86,7 @@ var StatesField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 
 module.exports = StatesField;

@@ -1,8 +1,8 @@
 import React from 'react';
 import Gravatar from 'react-gravatar';
 
-var Option = React.createClass({
-	propTypes: {
+class Option extends React.Component {
+    static propTypes = {
 		addLabelText: React.PropTypes.string,
 		className: React.PropTypes.string,
 		mouseDown: React.PropTypes.func,
@@ -10,17 +10,21 @@ var Option = React.createClass({
 		mouseLeave: React.PropTypes.func,
 		option: React.PropTypes.object.isRequired,
 		renderFunc: React.PropTypes.func
-	},
-	handleMouseDown (e) {
+	};
+
+    handleMouseDown = (e) => {
 		this.props.mouseDown(this.props.option, e);
-	},
-	handleMouseEnter (e) {
+	};
+
+    handleMouseEnter = (e) => {
 		this.props.mouseEnter(this.props.option, e);
-	},
-	handleMouseLeave (e) {
+	};
+
+    handleMouseLeave = (e) => {
 		this.props.mouseLeave(this.props.option, e);
-	},
-	render () {
+	};
+
+    render() {
 		var obj = this.props.option;
 		var size = 15;
 		var gravatarStyle = {
@@ -42,6 +46,6 @@ var Option = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = Option;

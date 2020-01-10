@@ -5,18 +5,20 @@ import Select from 'react-select';
 
 const USERS = require('../data/users');
 
-var UsersField = React.createClass({
-	propTypes: {
+class UsersField extends React.Component {
+    static propTypes = {
 		hint: React.PropTypes.string,
 		label: React.PropTypes.string,
-	},
-	renderHint () {
+	};
+
+    renderHint = () => {
 		if (!this.props.hint) return null;
 		return (
 			<div className="hint">{this.props.hint}</div>
 		);
-	},
-	render () {
+	};
+
+    render() {
 
 		return (
 			<div className="section">
@@ -31,6 +33,6 @@ var UsersField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = UsersField;

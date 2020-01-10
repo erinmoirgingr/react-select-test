@@ -5,61 +5,60 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var ValuesAsNumbersField = React.createClass({
-	displayName: 'ValuesAsNumbersField',
-	propTypes: {
+class ValuesAsNumbersField extends React.Component {
+    static displayName = 'ValuesAsNumbersField';
+
+    static propTypes = {
 		label: React.PropTypes.string
-	},
+	};
 
-	getInitialState () {
-		return {
-			options: [
-				{ value: 10, label: 'Ten' },
-				{ value: 11, label: 'Eleven' },
-				{ value: 12, label: 'Twelve' },
-				{ value: 23, label: 'Twenty-three' },
-				{ value: 24, label: 'Twenty-four' }
-			],
-			matchPos: 'any',
-			matchValue: true,
-			matchLabel: true,
-			value: null,
-			multi: false
-		};
-	},
+    state = {
+        options: [
+            { value: 10, label: 'Ten' },
+            { value: 11, label: 'Eleven' },
+            { value: 12, label: 'Twelve' },
+            { value: 23, label: 'Twenty-three' },
+            { value: 24, label: 'Twenty-four' }
+        ],
+        matchPos: 'any',
+        matchValue: true,
+        matchLabel: true,
+        value: null,
+        multi: false
+    };
 
-	onChangeMatchStart(event) {
+    onChangeMatchStart = (event) => {
 		this.setState({
 			matchPos: event.target.checked ? 'start' : 'any'
 		});
-	},
+	};
 
-	onChangeMatchValue(event) {
+    onChangeMatchValue = (event) => {
 		this.setState({
 			matchValue: event.target.checked
 		});
-	},
+	};
 
-	onChangeMatchLabel(event) {
+    onChangeMatchLabel = (event) => {
 		this.setState({
 			matchLabel: event.target.checked
 		});
-	},
+	};
 
-	onChange(value, values) {
+    onChange = (value, values) => {
 		this.setState({
 			value: value
 		});
 		logChange(value, values);
-	},
+	};
 
-	onChangeMulti(event) {
+    onChangeMulti = (event) => {
 		this.setState({
 			multi: event.target.checked
 		});
-	},
+	};
 
-	render () {
+    render() {
 
 		var matchProp = 'any';
 
@@ -104,6 +103,6 @@ var ValuesAsNumbersField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = ValuesAsNumbersField;

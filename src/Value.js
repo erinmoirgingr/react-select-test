@@ -1,30 +1,29 @@
 var React = require('react');
 var classes = require('classnames');
 
-var Value = React.createClass({
+class Value extends React.Component {
+    static displayName = 'Value';
 
-	displayName: 'Value',
-
-	propTypes: {
+    static propTypes = {
 		disabled: React.PropTypes.bool,                   // disabled prop passed to ReactSelect
 		onOptionLabelClick: React.PropTypes.func,         // method to handle click on value label
 		onRemove: React.PropTypes.func,                   // method to handle remove of that value
 		option: React.PropTypes.object.isRequired,        // option passed to component
 		optionLabelClick: React.PropTypes.bool,           // indicates if onOptionLabelClick should be handled
 		renderer: React.PropTypes.func                    // method to render option label passed to ReactSelect
-	},
+	};
 
-	blockEvent (event) {
+    blockEvent = (event) => {
 		event.stopPropagation();
-	},
+	};
 
-	handleOnRemove (event) {
+    handleOnRemove = (event) => {
 		if (!this.props.disabled) {
 			this.props.onRemove(event);
 		}
-	},
+	};
 
-	render () {
+    render() {
 		var label = this.props.option.label;
 		if (this.props.renderer) {
 			label = this.props.renderer(this.props.option);
@@ -65,7 +64,6 @@ var Value = React.createClass({
 			</div>
 		);
 	}
-
-});
+}
 
 module.exports = Value;

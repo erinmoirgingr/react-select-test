@@ -5,24 +5,28 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var SelectedValuesField = React.createClass({
-	displayName: 'SelectedValuesField',
-	propTypes: {
+class SelectedValuesField extends React.Component {
+    static displayName = 'SelectedValuesField';
+
+    static propTypes = {
 		allowCreate: React.PropTypes.bool,
 		hint: React.PropTypes.string,
 		label: React.PropTypes.string,
 		options: React.PropTypes.array,
-	},
-	onLabelClick (data, event) {
+	};
+
+    onLabelClick = (data, event) => {
 		console.log(data, event);
-	},
-	renderHint () {
+	};
+
+    renderHint = () => {
 		if (!this.props.hint) return null;
 		return (
 			<div className="hint">{this.props.hint}</div>
 		);
-	},
-	render () {
+	};
+
+    render() {
 		return (
 			<div className="section">
 				<h3 className="section-heading">{this.props.label}</h3>
@@ -38,6 +42,6 @@ var SelectedValuesField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = SelectedValuesField;

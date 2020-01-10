@@ -5,25 +5,28 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var MultiSelectField = React.createClass({
-	displayName: 'MultiSelectField',
-	propTypes: {
+class MultiSelectField extends React.Component {
+    static displayName = 'MultiSelectField';
+
+    static propTypes = {
 		label: React.PropTypes.string,
-	},
-	getInitialState () {
-		return {
-			disabled: false,
-			value: []
-		};
-	},
-	handleSelectChange (value, values) {
+	};
+
+    state = {
+        disabled: false,
+        value: []
+    };
+
+    handleSelectChange = (value, values) => {
 		logChange('New value:', value, 'Values:', values);
 		this.setState({ value: value });
-	},
-	toggleDisabled (e) {
+	};
+
+    toggleDisabled = (e) => {
 		this.setState({ 'disabled': e.target.checked });
-	},
-	render () {
+	};
+
+    render() {
 		var ops = [
 			{ label: 'Chocolate', value: 'chocolate' },
 			{ label: 'Vanilla', value: 'vanilla' },
@@ -46,6 +49,6 @@ var MultiSelectField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = MultiSelectField;

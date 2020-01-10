@@ -5,21 +5,26 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var DisabledUpsellOptions = React.createClass({
-	displayName: 'DisabledUpsellOptions',
-	propTypes: {
+class DisabledUpsellOptions extends React.Component {
+    static displayName = 'DisabledUpsellOptions';
+
+    static propTypes = {
 		label: React.PropTypes.string,
-	},
-	onLabelClick: function (data, event) {
+	};
+
+    onLabelClick = (data, event) => {
 		console.log(data, event);
-	},
-	renderLink: function() {
+	};
+
+    renderLink = () => {
 		return <a style={{ marginLeft: 5 }} href="/upgrade" target="_blank">Upgrade here!</a>;
-	},
-	renderOption: function(option) {
+	};
+
+    renderOption = (option) => {
 		return <span>{option.label} {option.link} </span>;
-	},
-	render: function() {
+	};
+
+    render() {
 		var ops = [
 			{ label: 'Basic customer support', value: 'basic' },
 			{ label: 'Premium customer support', value: 'premium' },
@@ -37,5 +42,6 @@ var DisabledUpsellOptions = React.createClass({
 			</div>
 		);
 	}
-});
+}
+
 module.exports = DisabledUpsellOptions;

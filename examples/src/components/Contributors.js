@@ -3,23 +3,25 @@ import Select from 'react-select';
 
 var CONTRIBUTORS = require('../data/contributors');
 
-var Contributors = React.createClass({
-	displayName: 'Contributors',
-	propTypes: {
+class Contributors extends React.Component {
+    static displayName = 'Contributors';
+
+    static propTypes = {
 		hint: React.PropTypes.string,
 		label: React.PropTypes.string,
-	},
-	getInitialState () {
-		return {
-			value: 'jedwatson',
-		};
-	},
-	onChange (value) {
+	};
+
+    state = {
+        value: 'jedwatson',
+    };
+
+    onChange = (value) => {
 		this.setState({
 			value: value
 		});
-	},
-	loadOptions (input, callback) {
+	};
+
+    loadOptions = (input, callback) => {
 		console.log(input);
 		input = input.toLowerCase();
 		var data = {
@@ -31,14 +33,16 @@ var Contributors = React.createClass({
 		setTimeout(function() {
 			callback(null, data);
 		}, 500);
-	},
-	renderHint () {
+	};
+
+    renderHint = () => {
 		if (!this.props.hint) return null;
 		return (
 			<div className="hint">{this.props.hint}</div>
 		);
-	},
-	render () {
+	};
+
+    render() {
 		return (
 			<div className="section">
 				<h3 className="section-heading">{this.props.label}</h3>
@@ -47,6 +51,6 @@ var Contributors = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = Contributors;

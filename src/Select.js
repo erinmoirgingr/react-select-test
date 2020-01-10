@@ -3,6 +3,7 @@
 /* eslint react/jsx-sort-prop-types: 0, react/sort-comp: 0, react/prop-types: 0 */
 
 var React = require('react');
+var createReactClass = require('create-react-class');
 var ReactDOM = require('react-dom');
 var Input = require('react-input-autosize');
 var classes = require('classnames');
@@ -12,7 +13,7 @@ var Option = require('./Option');
 
 var requestId = 0;
 
-var Select = React.createClass({
+var Select = createReactClass({
 
 	displayName: 'Select',
 
@@ -159,12 +160,14 @@ var Select = React.createClass({
 	},
 
 	componentDidMount () {
+		this.mounted = true;
 		if (this.props.asyncOptions && this.props.autoload) {
 			this.autoloadAsyncOptions();
 		}
 	},
 
 	componentWillUnmount () {
+		this.mounted = false;
 		clearTimeout(this._blurTimeout);
 		clearTimeout(this._focusTimeout);
 		if (this.state.isOpen) {
@@ -201,7 +204,7 @@ var Select = React.createClass({
 			clearTimeout(this._blurTimeout);
 			clearTimeout(this._focusTimeout);
 			this._focusTimeout = setTimeout(() => {
-				if (!this.isMounted()) return;
+				if (!this.mounted return;
 				this.getInputNode().focus();
 				this._focusAfterUpdate = false;
 			}, 50);

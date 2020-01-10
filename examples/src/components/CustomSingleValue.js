@@ -1,12 +1,13 @@
 import React from 'react';
 import Gravatar from 'react-gravatar';
 
-var SingleValue = React.createClass({
-	propTypes: {
+class SingleValue extends React.Component {
+    static propTypes = {
 		placeholder: React.PropTypes.string,
 		value: React.PropTypes.object
-	},
-	render () {
+	};
+
+    render() {
 		var obj = this.props.value;
 		var size = 15;
 		var gravatarStyle = {
@@ -32,6 +33,6 @@ var SingleValue = React.createClass({
 		</div>
 	);
 	}
-});
+}
 
 module.exports = SingleValue;

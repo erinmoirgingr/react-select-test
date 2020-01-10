@@ -5,39 +5,38 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var CustomKeysField = React.createClass({
-	displayName: 'CustomKeysField',
-	propTypes: {
+class CustomKeysField extends React.Component {
+    static displayName = 'CustomKeysField';
+
+    static propTypes = {
 		label: React.PropTypes.string
-	},
+	};
 
-	getInitialState () {
-		return {
-			options: [
-				{ id: '1', name: 'One' },
-				{ id: '2', name: 'Two' },
-				{ id: '3', name: 'Three' },
-				{ id: '4', name: 'Four' }
-			],
-			value: null,
-			multi: false
-		};
-	},
+    state = {
+        options: [
+            { id: '1', name: 'One' },
+            { id: '2', name: 'Two' },
+            { id: '3', name: 'Three' },
+            { id: '4', name: 'Four' }
+        ],
+        value: null,
+        multi: false
+    };
 
-	onChange(value, values) {
+    onChange = (value, values) => {
 		this.setState({
 			value: value
 		});
 		logChange(value, values);
-	},
+	};
 
-	onChangeMulti(event) {
+    onChangeMulti = (event) => {
 		this.setState({
 			multi: event.target.checked
 		});
-	},
+	};
 
-	render () {
+    render() {
 		return (
 			<div className="section">
 				<h3 className="section-heading">{this.props.label}</h3>
@@ -59,6 +58,6 @@ var CustomKeysField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = CustomKeysField;

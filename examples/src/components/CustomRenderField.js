@@ -5,29 +5,33 @@ function logChange() {
 	console.log.apply(console, [].concat(['Select value changed:'], Array.prototype.slice.apply(arguments)));
 }
 
-var CustomRenderField = React.createClass({
-	displayName: 'CustomRenderField',
-	propTypes: {
+class CustomRenderField extends React.Component {
+    static displayName = 'CustomRenderField';
+
+    static propTypes = {
 		delimiter: React.PropTypes.string,
 		label: React.PropTypes.string,
 		multi: React.PropTypes.bool,
-	},
-	getInitialState () {
-		return {};
-	},
-	onChangeMulti(event) {
+	};
+
+    state = {};
+
+    onChangeMulti = (event) => {
 		this.setState({
 			multi: event.target.checked
 		});
-	},
-	renderOption (option) {
+	};
+
+    renderOption = (option) => {
 		return <span style={{ color: option.hex }}>{option.label} ({option.hex})</span>;
 
-	},
-	renderValue (option) {
+	};
+
+    renderValue = (option) => {
 		return <strong style={{ color: option.hex }}>{option.label}</strong>;
-	},
-	render () {
+	};
+
+    render() {
 		var ops = [
 			{ label: 'Red', value: 'red', hex: '#EC6230' },
 			{ label: 'Green', value: 'green', hex: '#4ED84E' },
@@ -54,6 +58,6 @@ var CustomRenderField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = CustomRenderField;

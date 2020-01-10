@@ -1,13 +1,15 @@
 import React from 'react';
 import Select from 'react-select';
 
-var RemoteSelectField = React.createClass({
-	displayName: 'RemoteSelectField',
-	propTypes: {
+class RemoteSelectField extends React.Component {
+    static displayName = 'RemoteSelectField';
+
+    static propTypes = {
 		hint: React.PropTypes.string,
 		label: React.PropTypes.string,
-	},
-	loadOptions (input, callback) {
+	};
+
+    loadOptions = (input, callback) => {
 		input = input.toLowerCase();
 		var rtn = {
 			options: [
@@ -44,14 +46,16 @@ var RemoteSelectField = React.createClass({
 		setTimeout(function() {
 			callback(null, rtn);
 		}, 500);
-	},
-	renderHint () {
+	};
+
+    renderHint = () => {
 		if (!this.props.hint) return null;
 		return (
 			<div className="hint">{this.props.hint}</div>
 		);
-	},
-	render () {
+	};
+
+    render() {
 		return (
 			<div className="section">
 				<h3 className="section-heading">{this.props.label}</h3>
@@ -60,6 +64,6 @@ var RemoteSelectField = React.createClass({
 			</div>
 		);
 	}
-});
+}
 
 module.exports = RemoteSelectField;
