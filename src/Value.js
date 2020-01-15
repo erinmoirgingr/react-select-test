@@ -3,25 +3,19 @@ var React = require('react');
 var classes = require('classnames');
 
 class Value extends React.Component {
-    static displayName = 'Value';
 
-    static propTypes = {
-		disabled: PropTypes.bool,                   // disabled prop passed to ReactSelect
-		onOptionLabelClick: PropTypes.func,         // method to handle click on value label
-		onRemove: PropTypes.func,                   // method to handle remove of that value
-		option: PropTypes.object.isRequired,        // option passed to component
-		optionLabelClick: PropTypes.bool,           // indicates if onOptionLabelClick should be handled
-		renderer: PropTypes.func                    // method to render option label passed to ReactSelect
-	};
+    constructor(props) {
+      super(props);
 
-    blockEvent = (event) => {
-		event.stopPropagation();
-	};
+      blockEvent = (event) => {
+    		event.stopPropagation();
+    	};
 
-    handleOnRemove = (event) => {
-		if (!this.props.disabled) {
-			this.props.onRemove(event);
-		}
+      handleOnRemove = (event) => {
+    		if (!this.props.disabled) {
+    			this.props.onRemove(event);
+    		}
+      }    
 	};
 
     render() {
@@ -66,5 +60,16 @@ class Value extends React.Component {
 		);
 	}
 }
+
+Value.propTypes = {
+  disabled: PropTypes.bool,                   // disabled prop passed to ReactSelect
+  onOptionLabelClick: PropTypes.func,         // method to handle click on value label
+  onRemove: PropTypes.func,                   // method to handle remove of that value
+  option: PropTypes.object.isRequired,        // option passed to component
+  optionLabelClick: PropTypes.bool,           // indicates if onOptionLabelClick should be handled
+  renderer: PropTypes.func                    // method to render option label passed to ReactSelect
+}
+
+Value.displayName = 'Value';
 
 module.exports = Value;
