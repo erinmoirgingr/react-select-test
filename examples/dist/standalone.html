@@ -2,6 +2,8 @@
 <head>
 	<title>React-Select Example</title>
 	<link rel="stylesheet" href="example.css">
+	<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -17,19 +19,15 @@
 			Copyright &copy; Jed Watson 2014. MIT Licensed.
 		</div>
 	</div>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.js"></script>
-	<script src="//jedwatson.github.io/classnames/classNames.js"></script>
-	<script src="//jedwatson.github.io/react-input-autosize/standalone.js"></script>
-	<script src="standalone.js"></script>
-	<script type="text/jsx">
+	<script src="../../dist/bundle.js"></script>
+	<script type="text/javascript">
 		var ops = [
 			{ label: 'One', value: 1 },
 			{ label: 'Two', value: 2 },
 			{ label: 'Three', value: 3 },
 		];
-		React.render(
-			<Select options={ops} />,
+		ReactDOM.render(
+			React.createElement(window.SelectInput, {options: ops}),
 			document.getElementById('example')
 		);
 	</script>
