@@ -7,15 +7,15 @@ class Value extends React.Component {
     constructor(props) {
       super(props);
 
-      blockEvent = (event) => {
+      this.blockEvent = (event) => {
     		event.stopPropagation();
     	};
 
-      handleOnRemove = (event) => {
+      this.handleOnRemove = (event) => {
     		if (!this.props.disabled) {
     			this.props.onRemove(event);
     		}
-      }    
+      }
 	};
 
     render() {
