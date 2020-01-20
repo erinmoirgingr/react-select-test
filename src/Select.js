@@ -805,7 +805,7 @@ class Select extends React.Component {
 		var menuProps;
 		if (this.state.isOpen) {
 			menuProps = {
-				ref: 'menu',
+				ref: this.refElems.menu,
 				className: 'Select-menu',
 				onMouseDown: this.handleMouseDownOnMenu
 			};
