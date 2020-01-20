@@ -21,4 +21,4 @@ SingleValue.propTypes = {
   value: PropTypes.object              // selected option
 }
 
-module.exports = SingleValue;
+export default SingleValue;

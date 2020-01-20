@@ -1,9 +1,8 @@
 var webpack = require("webpack");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    app: ["./src/index"],
+    app: ["./src/Select.js"],
   },
   output: {
     path: __dirname + '/dist',

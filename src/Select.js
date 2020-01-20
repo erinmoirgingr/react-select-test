@@ -2,122 +2,60 @@
    cause conflicts with some open PRs unnecessarily. */
 /* eslint react/jsx-sort-prop-types: 0, react/sort-comp: 0, react/prop-types: 0 */
 
-var React = require('react');
-const PropTypes = require("prop-types");
-var createReactClass = require('create-react-class');
-var ReactDOM = require('react-dom');
-var Input = require('react-input-autosize');
-var classes = require('classnames');
-var Value = require('./Value');
-var SingleValue = require('./SingleValue');
-var Option = require('./Option');
+import React from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import createReactClass from "create-react-class";
+import Input from "react-input-autosize";
+import classes from "classnames";
+import Value from "./Value";
+import SingleValue from "./SingleValue";
+import Option from "./Option";
+
+import "../scss/default.scss";
 
 var requestId = 0;
 
-var Select = createReactClass({
+class Select extends React.Component {
 
-	displayName: 'Select',
-
-	propTypes: {
-		addLabelText: PropTypes.string,      // placeholder displayed when you want to add a label on a multi-value input
-		allowCreate: PropTypes.bool,         // whether to allow creation of new entries
-		asyncOptions: PropTypes.func,        // function to call to get options
-		autoload: PropTypes.bool,            // whether to auto-load the default async options set
-		backspaceRemoves: PropTypes.bool,    // whether backspace removes an item if there is no text input
-		cacheAsyncResults: PropTypes.bool,   // whether to allow cache
-		className: PropTypes.string,         // className for the outer element
-		clearAllText: PropTypes.string,      // title for the "clear" control when multi: true
-		clearValueText: PropTypes.string,    // title for the "clear" control
-		clearable: PropTypes.bool,           // should it be possible to reset value
-		delimiter: PropTypes.string,         // delimiter to use to join multiple values
-		disabled: PropTypes.bool,            // whether the Select is disabled or not
-		filterOption: PropTypes.func,        // method to filter a single option  (option, filterString)
-		filterOptions: PropTypes.func,       // method to filter the options array: function ([options], filterString, [values])
-		ignoreCase: PropTypes.bool,          // whether to perform case-insensitive filtering
-		inputProps: PropTypes.object,        // custom attributes for the Input (in the Select-control) e.g: {'data-foo': 'bar'}
-		isLoading: PropTypes.bool,           // whether the Select is loading externally or not (such as options being loaded)
-		labelKey: PropTypes.string,          // path of the label value in option objects
-		matchPos: PropTypes.string,          // (any|start) match the start or entire string when filtering
-		matchProp: PropTypes.string,         // (any|label|value) which option property to filter on
-		multi: PropTypes.bool,               // multi-value input
-		name: PropTypes.string,              // field name, for hidden <input /> tag
-		newOptionCreator: PropTypes.func,    // factory to create new options when allowCreate set
-		noResultsText: PropTypes.string,     // placeholder displayed when there are no matching search results
-		onBlur: PropTypes.func,              // onBlur handler: function (event) {}
-		onChange: PropTypes.func,            // onChange handler: function (newValue) {}
-		onFocus: PropTypes.func,             // onFocus handler: function (event) {}
-		onInputChange: PropTypes.func,       // onInputChange handler: function (inputValue) {}
-		onOptionLabelClick: PropTypes.func,  // onCLick handler for value labels: function (value, event) {}
-		optionComponent: PropTypes.func,     // option component to render in dropdown
-		optionRenderer: PropTypes.func,      // optionRenderer: function (option) {}
-		options: PropTypes.array,            // array of options
-		placeholder: PropTypes.string,       // field placeholder, displayed when there's no value
-		searchable: PropTypes.bool,          // whether to enable searching feature or not
-		searchingText: PropTypes.string,     // message to display whilst options are loading via asyncOptions
-		searchPromptText: PropTypes.string,  // label to prompt for search input
-		singleValueComponent: PropTypes.func,// single value component when multiple is set to false
-		value: PropTypes.any,                // initial field value
-		valueComponent: PropTypes.func,      // value component to render in multiple mode
-		valueKey: PropTypes.string,          // path of the label value in option objects
-		valueRenderer: PropTypes.func        // valueRenderer: function (option) {}
-	},
-
-	getDefaultProps () {
-		return {
-			addLabelText: 'Add "{label}"?',
-			allowCreate: false,
-			asyncOptions: undefined,
-			autoload: true,
-			backspaceRemoves: true,
-			cacheAsyncResults: true,
-			className: undefined,
-			clearAllText: 'Clear all',
-			clearValueText: 'Clear value',
-			clearable: true,
-			delimiter: ',',
-			disabled: false,
-			ignoreCase: true,
-			inputProps: {},
-			isLoading: false,
-			labelKey: 'label',
-			matchPos: 'any',
-			matchProp: 'any',
-			name: undefined,
-			newOptionCreator: undefined,
-			noResultsText: 'No results found',
-			onChange: undefined,
-			onInputChange: undefined,
-			onOptionLabelClick: undefined,
-			optionComponent: Option,
-			options: undefined,
-			placeholder: 'Select...',
-			searchable: true,
-			searchingText: 'Searching...',
-			searchPromptText: 'Type to search',
-			singleValueComponent: SingleValue,
-			value: undefined,
-			valueComponent: Value,
-			valueKey: 'value'
-		};
-	},
-
-	getInitialState () {
-		return {
-			/*
-			 * set by getStateFromValue on componentWillMount:
-			 * - value
-			 * - values
-			 * - filteredOptions
-			 * - inputValue
-			 * - placeholder
-			 * - focusedOption
-			*/
+	constructor(props) {
+		super(props);
+		this.state = {
 			isFocused: false,
 			isLoading: false,
 			isOpen: false,
 			options: this.props.options
-		};
-	},
+		}
+		this.refElems = {
+			selectMenuContainer: React.createRef(),
+			control: React.createRef(),
+			focused: React.createRef(),
+			menu: React.createRef(),
+			input: React.createRef(),
+			value: React.createRef(),
+			wrapper: React.createRef(),
+		}
+
+		this.handleMouseDownOnMenu = this.handleMouseDownOnMenu.bind(this);
+		this.handleMouseDownOnArrow = this.handleMouseDownOnArrow.bind(this);
+		this.handleMouseDown = this.handleMouseDown.bind(this);
+
+		this.handleKeyDown = this.handleKeyDown.bind(this);
+		this.handleInputBlur = this.handleInputBlur.bind(this);
+		this.handleInputFocus = this.handleInputFocus.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+
+		this.renderOptionLabel = this.renderOptionLabel.bind(this);
+
+		this.focusOption = this.focusOption.bind(this);
+		this.unfocusOption = this.unfocusOption.bind(this);
+		this.focusNextOption = this.focusNextOption.bind(this);
+		this.focusPreviousOption = this.focusPreviousOption.bind(this);
+
+		this.selectValue = this.selectValue.bind(this);
+		this.clearValue = this.clearValue.bind(this);
+
+	}
 
 	componentWillMount () {
 		this._optionsCache = {};
@@ -126,8 +64,8 @@ var Select = createReactClass({
 			if (!this.state.isOpen) {
 				return;
 			}
-			var menuElem = ReactDOM.findDOMNode(this.refs.selectMenuContainer);
-			var controlElem = ReactDOM.findDOMNode(this.refs.control);
+			var menuElem = ReactDOM.findDOMNode(this.refElems.selectMenuContainer.current);
+			var controlElem = ReactDOM.findDOMNode(this.refElems.control.current);
 
 			var eventOccuredOutsideMenu = this.clickedOutsideElement(menuElem, event);
 			var eventOccuredOutsideControl = this.clickedOutsideElement(controlElem, event);
@@ -158,14 +96,14 @@ var Select = createReactClass({
 		var defaultValue = this.props.value ? this.props.value : this.props.defaultValue;
 
 		this.setState(this.getStateFromValue(defaultValue));
-	},
+	}
 
 	componentDidMount () {
 		this.mounted = true;
 		if (this.props.asyncOptions && this.props.autoload) {
 			this.autoloadAsyncOptions();
 		}
-	},
+	}
 
 	componentWillUnmount () {
 		this.mounted = false;
@@ -174,7 +112,7 @@ var Select = createReactClass({
 		if (this.state.isOpen) {
 			this._unbindCloseMenuIfClickedOutside();
 		}
-	},
+	}
 
 	componentWillReceiveProps (newProps) {
 		var optionsChanged = false;
@@ -198,7 +136,7 @@ var Select = createReactClass({
 				setState();
 			}
 		}
-	},
+	}
 
 	componentDidUpdate () {
 		if (!this.props.disabled && this._focusAfterUpdate) {
@@ -211,9 +149,9 @@ var Select = createReactClass({
 			}, 50);
 		}
 		if (this._focusedOptionReveal) {
-			if (this.refs.focused && this.refs.menu) {
-				var focusedDOM = ReactDOM.findDOMNode(this.refs.focused);
-				var menuDOM = ReactDOM.findDOMNode(this.refs.menu);
+			if (this.refElems.focused.current && this.refElems.menu.current) {
+				var focusedDOM = ReactDOM.findDOMNode(this.refElems.focused.current);
+				var menuDOM = ReactDOM.findDOMNode(this.refElems.menu.current);
 				var focusedRect = focusedDOM.getBoundingClientRect();
 				var menuRect = menuDOM.getBoundingClientRect();
 
@@ -223,11 +161,11 @@ var Select = createReactClass({
 			}
 			this._focusedOptionReveal = false;
 		}
-	},
+	}
 
 	focus () {
 		this.getInputNode().focus();
-	},
+	}
 
 	clickedOutsideElement (element, event) {
 		var eventTarget = (event.target) ? event.target : event.srcElement;
@@ -236,7 +174,7 @@ var Select = createReactClass({
 			eventTarget = eventTarget.offsetParent;
 		}
 		return true;
-	},
+	}
 
 	getStateFromValue (value, options, placeholder) {
 		if (!options) {
@@ -270,7 +208,7 @@ var Select = createReactClass({
 			placeholder: !this.props.multi && values.length ? values[0][this.props.labelKey] : placeholder,
 			focusedOption: focusedOption
 		};
-	},
+	}
 
 	getFirstFocusableOption  (options) {
 		for (var optionIndex = 0; optionIndex < options.length; ++optionIndex) {
@@ -278,7 +216,7 @@ var Select = createReactClass({
 				return options[optionIndex];
 			}
 		}
-	},
+	}
 
 	initValuesArray (values, options) {
 		if (!Array.isArray(values)) {
@@ -312,7 +250,7 @@ var Select = createReactClass({
 				return val;
 			}
 		});
-	},
+	}
 
 	setValue (value, focusAfterUpdate) {
 		if (focusAfterUpdate || focusAfterUpdate === undefined) {
@@ -322,7 +260,7 @@ var Select = createReactClass({
 		newState.isOpen = false;
 		this.fireChangeEvent(newState);
 		this.setState(newState);
-	},
+	}
 
 	selectValue (value) {
 		if (!this.props.multi) {
@@ -331,21 +269,21 @@ var Select = createReactClass({
 			this.addValue(value);
 		}
 		this._unbindCloseMenuIfClickedOutside();
-	},
+	}
 
 	addValue (value) {
 		this.setValue(this.state.values.concat(value));
-	},
+	}
 
 	popValue () {
 		this.setValue(this.state.values.slice(0, this.state.values.length - 1));
-	},
+	}
 
 	removeValue (valueToRemove) {
 		this.setValue(this.state.values.filter(function(value) {
 			return value !== valueToRemove;
 		}));
-	},
+	}
 
 	clearValue (event) {
 		// if the event was triggered by a mousedown and not the primary
@@ -356,22 +294,22 @@ var Select = createReactClass({
 		event.stopPropagation();
 		event.preventDefault();
 		this.setValue(null);
-	},
+	}
 
 	resetValue () {
 		this.setValue(this.state.value === '' ? null : this.state.value);
-	},
+	}
 
 	getInputNode  () {
-		var input = this.refs.input;
+		var input = this.refElems.input.current;
 		return this.props.searchable ? input : ReactDOM.findDOMNode(input);
-	},
+	}
 
 	fireChangeEvent (newState) {
 		if (newState.value !== this.state.value && this.props.onChange) {
 			this.props.onChange(newState.value, newState.values);
 		}
-	},
+	}
 
 	handleMouseDown (event) {
 		// if the event was triggered by a mousedown and not the primary
@@ -398,7 +336,7 @@ var Select = createReactClass({
 			this._openAfterFocus = true;
 			this.getInputNode().focus();
 		}
-	},
+	}
 
 	handleMouseDownOnMenu (event) {
 		// if the event was triggered by a mousedown and not the primary
@@ -408,7 +346,7 @@ var Select = createReactClass({
 		}
 		event.stopPropagation();
 		event.preventDefault();
-	},
+	}
 
 	handleMouseDownOnArrow (event) {
 		// if the event was triggered by a mousedown and not the primary
@@ -425,7 +363,7 @@ var Select = createReactClass({
 		this.setState({
 			isOpen: false
 		}, this._unbindCloseMenuIfClickedOutside);
-	},
+	}
 
 	handleInputFocus (event) {
 		var newIsOpen = this.state.isOpen || this._openAfterFocus;
@@ -444,15 +382,15 @@ var Select = createReactClass({
 		if (this.props.onFocus) {
 			this.props.onFocus(event);
 		}
-	},
+	}
 
 	handleInputBlur (event) {
-		var menuDOM = ReactDOM.findDOMNode(this.refs.menu);
+		var menuDOM = ReactDOM.findDOMNode(this.refElems.menu.current);
 		if (document.activeElement.isEqualNode(menuDOM)) {
 			return;
 		}
 		this._blurTimeout = setTimeout(() => {
-			if (this._focusAfterUpdate || !this.isMounted()) return;
+			if (this._focusAfterUpdate) return;
 			this.setState({
 				inputValue: '',
 				isFocused: false,
@@ -462,7 +400,7 @@ var Select = createReactClass({
 		if (this.props.onBlur) {
 			this.props.onBlur(event);
 		}
-	},
+	}
 
 	handleKeyDown (event) {
 		if (this.props.disabled) return;
@@ -508,7 +446,7 @@ var Select = createReactClass({
 			default: return;
 		}
 		event.preventDefault();
-	},
+	}
 
 	// Ensures that the currently focused option is available in filteredOptions.
 	// If not, returns the first available option.
@@ -519,7 +457,7 @@ var Select = createReactClass({
 			}
 		}
 		return this.getFirstFocusableOption(filteredOptions);
-	},
+	}
 
 	handleInputChange (event) {
 		// assign an internal variable because we need to use
@@ -546,7 +484,7 @@ var Select = createReactClass({
 				focusedOption: this._getNewFocusedOption(filteredOptions)
 			}, this._bindCloseMenuIfClickedOutside);
 		}
-	},
+	}
 
 	autoloadAsyncOptions () {
 		this.setState({
@@ -556,7 +494,7 @@ var Select = createReactClass({
 			// update with new options but don't focus
 			this.setValue(this.props.value, false);
 		});
-	},
+	}
 
 	loadAsyncOptions (input = '', state, callback) {
 		var thisRequestId = this._currentRequestId = requestId++;
@@ -615,7 +553,7 @@ var Select = createReactClass({
 				optionsResponseHandler(err)
 			});
 		}
-	},
+	}
 
 	filterOptions (options, values) {
 		var filterValue = this._optionsFilterString;
@@ -643,7 +581,7 @@ var Select = createReactClass({
 			};
 			return (options || []).filter(filterOption, this);
 		}
-	},
+	}
 
 	selectFocusedOption () {
 		if (this.props.allowCreate && !this.state.focusedOption) {
@@ -653,21 +591,21 @@ var Select = createReactClass({
 		if (this.state.focusedOption) {
 			return this.selectValue(this.state.focusedOption);
 		}
-	},
+	}
 
 	focusOption (op) {
 		this.setState({
 			focusedOption: op
 		});
-	},
+	}
 
 	focusNextOption () {
 		this.focusAdjacentOption('next');
-	},
+	}
 
 	focusPreviousOption () {
 		this.focusAdjacentOption('previous');
-	},
+	}
 
 	focusAdjacentOption (dir) {
 		this._focusedOptionReveal = true;
@@ -705,7 +643,7 @@ var Select = createReactClass({
 		this.setState({
 			focusedOption: focusedOption
 		});
-	},
+	}
 
 	unfocusOption (op) {
 		if (this.state.focusedOption === op) {
@@ -713,11 +651,11 @@ var Select = createReactClass({
 				focusedOption: null
 			});
 		}
-	},
+	}
 
 	renderOptionLabel (op) {
 		return op[this.props.labelKey];
-	},
+	}
 
 	buildMenu () {
 		var focusedValue = this.state.focusedOption ? this.state.focusedOption[this.props.valueKey] : null;
@@ -747,7 +685,7 @@ var Select = createReactClass({
 				'is-focused': isFocused,
 				'is-disabled': op.disabled
 			});
-			var ref = isFocused ? 'focused' : null;
+			var ref = isFocused ? this.refs.focused : null;
 			var optionResult = React.createElement(this.props.optionComponent, {
 				key: 'option-' + op[this.props.valueKey],
 				className: optionClass,
@@ -783,17 +721,17 @@ var Select = createReactClass({
 				</div>
 			);
 		}
-	},
+	}
 
 	handleOptionLabelClick  (value, event) {
 		if (this.props.onOptionLabelClick) {
 			this.props.onOptionLabelClick(value, event);
 		}
-	},
+	}
 
 	isLoading () {
 		return this.props.isLoading || this.state.isLoading;
-	},
+	}
 
 	render () {
 		var selectClass = classes('Select', this.props.className, {
@@ -872,7 +810,7 @@ var Select = createReactClass({
 				onMouseDown: this.handleMouseDownOnMenu
 			};
 			menu = (
-				<div ref="selectMenuContainer" className="Select-menu-outer">
+				<div ref={this.refElems.selectMenuContainer} className="Select-menu-outer">
 					<div {...menuProps}>{this.buildMenu()}</div>
 				</div>
 			);
@@ -880,7 +818,7 @@ var Select = createReactClass({
 
 		var input;
 		var inputProps = {
-			ref: 'input',
+			ref: this.refElems.input,
 			className: 'Select-input ' + (this.props.inputProps.className || ''),
 			tabIndex: this.props.tabIndex || 0,
 			onFocus: this.handleInputFocus,
@@ -919,8 +857,8 @@ var Select = createReactClass({
         }
 
 		return (
-			<div ref="wrapper" className={selectClass}>
-				<select className="hidden" ref="value" name={selectName} multiple={this.props.multi} value={selectValue} disabled={this.props.disabled} readOnly={true}>
+			<div ref={this.refElems.wrapper} className={selectClass}>
+				<select className="hidden" ref={this.refElems.value} name={selectName} multiple={this.props.multi} value={selectValue} disabled={this.props.disabled} readOnly={true}>
 					{
 						currentValues.map(function(value) {
 							return (
@@ -929,7 +867,7 @@ var Select = createReactClass({
 						})
 					}
 				</select>
-				<div className="Select-control" ref="control" onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
+				<div className="Select-control" ref={this.refElems.control} onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown} onTouchEnd={this.handleMouseDown}>
 					{value}
 					{input}
 					{loading}
@@ -940,6 +878,89 @@ var Select = createReactClass({
 			</div>
 		);
 	}
-});
+}
 
-module.exports = Select;
+Select.displayName = 'Select';
+
+Select.propTypes = {
+	addLabelText: PropTypes.string,      // placeholder displayed when you want to add a label on a multi-value input
+	allowCreate: PropTypes.bool,         // whether to allow creation of new entries
+	asyncOptions: PropTypes.func,        // function to call to get options
+	autoload: PropTypes.bool,            // whether to auto-load the default async options set
+	backspaceRemoves: PropTypes.bool,    // whether backspace removes an item if there is no text input
+	cacheAsyncResults: PropTypes.bool,   // whether to allow cache
+	className: PropTypes.string,         // className for the outer element
+	clearAllText: PropTypes.string,      // title for the "clear" control when multi: true
+	clearValueText: PropTypes.string,    // title for the "clear" control
+	clearable: PropTypes.bool,           // should it be possible to reset value
+	delimiter: PropTypes.string,         // delimiter to use to join multiple values
+	disabled: PropTypes.bool,            // whether the Select is disabled or not
+	filterOption: PropTypes.func,        // method to filter a single option  (option, filterString)
+	filterOptions: PropTypes.func,       // method to filter the options array: function ([options], filterString, [values])
+	ignoreCase: PropTypes.bool,          // whether to perform case-insensitive filtering
+	inputProps: PropTypes.object,        // custom attributes for the Input (in the Select-control) e.g: {'data-foo': 'bar'}
+	isLoading: PropTypes.bool,           // whether the Select is loading externally or not (such as options being loaded)
+	labelKey: PropTypes.string,          // path of the label value in option objects
+	matchPos: PropTypes.string,          // (any|start) match the start or entire string when filtering
+	matchProp: PropTypes.string,         // (any|label|value) which option property to filter on
+	multi: PropTypes.bool,               // multi-value input
+	name: PropTypes.string,              // field name, for hidden <input /> tag
+	newOptionCreator: PropTypes.func,    // factory to create new options when allowCreate set
+	noResultsText: PropTypes.string,     // placeholder displayed when there are no matching search results
+	onBlur: PropTypes.func,              // onBlur handler: function (event) {}
+	onChange: PropTypes.func,            // onChange handler: function (newValue) {}
+	onFocus: PropTypes.func,             // onFocus handler: function (event) {}
+	onInputChange: PropTypes.func,       // onInputChange handler: function (inputValue) {}
+	onOptionLabelClick: PropTypes.func,  // onCLick handler for value labels: function (value, event) {}
+	optionComponent: PropTypes.func,     // option component to render in dropdown
+	optionRenderer: PropTypes.func,      // optionRenderer: function (option) {}
+	options: PropTypes.array,            // array of options
+	placeholder: PropTypes.string,       // field placeholder, displayed when there's no value
+	searchable: PropTypes.bool,          // whether to enable searching feature or not
+	searchingText: PropTypes.string,     // message to display whilst options are loading via asyncOptions
+	searchPromptText: PropTypes.string,  // label to prompt for search input
+	singleValueComponent: PropTypes.func,// single value component when multiple is set to false
+	value: PropTypes.any,                // initial field value
+	valueComponent: PropTypes.func,      // value component to render in multiple mode
+	valueKey: PropTypes.string,          // path of the label value in option objects
+	valueRenderer: PropTypes.func        // valueRenderer: function (option) {}
+}
+
+Select.defaultProps = {
+	addLabelText: 'Add "{label}"?',
+	allowCreate: false,
+	asyncOptions: undefined,
+	autoload: true,
+	backspaceRemoves: true,
+	cacheAsyncResults: true,
+	className: undefined,
+	clearAllText: 'Clear all',
+	clearValueText: 'Clear value',
+	clearable: true,
+	delimiter: ',',
+	disabled: false,
+	ignoreCase: true,
+	inputProps: {},
+	isLoading: false,
+	labelKey: 'label',
+	matchPos: 'any',
+	matchProp: 'any',
+	name: undefined,
+	newOptionCreator: undefined,
+	noResultsText: 'No results found',
+	onChange: undefined,
+	onInputChange: undefined,
+	onOptionLabelClick: undefined,
+	optionComponent: Option,
+	options: undefined,
+	placeholder: 'Select...',
+	searchable: true,
+	searchingText: 'Searching...',
+	searchPromptText: 'Type to search',
+	singleValueComponent: SingleValue,
+	value: undefined,
+	valueComponent: Value,
+	valueKey: 'value'
+}
+
+export default Select;

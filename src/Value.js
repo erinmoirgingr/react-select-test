@@ -72,4 +72,4 @@ Value.propTypes = {
 
 Value.displayName = 'Value';
 
-module.exports = Value;
+export default Value;

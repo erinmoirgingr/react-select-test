@@ -69,4 +69,4 @@ Option.propTypes = {
   renderFunc: PropTypes.func               // method passed to ReactSelect component to render label text
 }
 
-module.exports = Option;
+export default Option;
